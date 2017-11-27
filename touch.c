@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int i,fd1;
 
 	if(argc < 2){
 		printf(2, "Usage: cant create\n");
@@ -13,13 +13,9 @@ int main(int argc, char *argv[])
 	}
 
 	for(i = 1; i < argc; i++){
-		if(mkfile(argv[i]) < 0){
+		if((fd1 = open(argv[1], O_CREATE|O_RDWR)) < 0){
 			printf(2, "touch: %s failed to create\n", argv[i]);
 			break;
-		}
-		else
-		{	
-			printf("berhasil\n");
 		}
 	}
 
