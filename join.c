@@ -3,13 +3,15 @@
 #include "user.h"
 #include "fcntl.h"
 
-char buf[512];
-char buf1[512];
+
+char buf[10];
+char buf1[10];
+char *token,*token1;
 int main(int argc, char *argv[])
 {
-	int fd0,fd1,fd2,n,m;
+	int fd0,fd1,fd2;
 
-	if(argc < 3){
+	if(argc <= 3){
 		printf(1, "Need 2 arguments\n");
 		exit();
 	}
@@ -24,7 +26,21 @@ int main(int argc, char *argv[])
 		exit();
 	}
 
+	if((fd2 = open(argv[3], O_CREATE|O_RDWR)) < 0){
+		printf(1,"cp: cant not open %s\n",argv[3]);
+		exit();
+	}
+
+	while(fgets(buf,sizeof(buf),fd0)!=NULL && fgets(buf,sizeof(buf1),fd1)!=NULL){
+		token=strtok(buf," ,."); token1=strtok(buf1," ,.");
+		while( token != NULL && token1 != NULL) {
+		    fputs(token,fd2); fputs(token1,fd2);	      	    
+			
+		    token = strtok(NULL, " ,."); token1 = strtok(NULL, " ,.");
+	   	}
+	}
 	close(fd0);
 	close(fd1);
+	close(fd2);
   exit();
 }
